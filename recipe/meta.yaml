@@ -1,0 +1,61 @@
+{% set name = "spml" %}
+{% set version = "0.2.2" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/s/spml/spml-{{ version }}.tar.gz
+  sha256: 3412e5bf2bb03fa2ef2a19ea1f71b87a25209a3455cfd291e0c8c7326ee08dde
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true # [py<312]
+
+requirements:
+  host:
+    - python
+    - pip
+    - setuptools >=61.0
+    - setuptools-scm >=6.2
+    - toml
+  run:
+    - python
+    - geopandas >=1.1.0
+    - joblib >=1.5.0
+    - libpysal >=4.12
+    - numpy >=2.0.0
+    - scipy >=1.14.0
+    - scikit-learn >=1.5.0
+    - pandas >=2.3.0
+
+test:
+  source_files:
+    - spml/tests
+  imports:
+    - spml
+  commands:
+    - pip check
+    - pytest -vv spml/tests
+  requires:
+    - pip
+    - pytest
+    - geodatasets
+
+about:
+  home: https://pysal.org/spml
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE
+  summary: Spatial machine learning.
+  description: |
+    Spatial modeling based on scikit-learn.
+    The aim of the package is to provide implementations of spatially-explicit modelling.
+  doc_url: https://pysal.org/spml
+  dev_url: https://github.com/pysal/spml
+
+extra:
+  recipe-maintainers:
+    - avetr-work
